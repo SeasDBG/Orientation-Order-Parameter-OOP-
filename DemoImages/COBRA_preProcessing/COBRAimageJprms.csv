@@ -1,0 +1,4 @@
+fileName , channelName , ZprojType , localContrastEnhancer , tubeness , tubenessPrmValue , levelSetSegmentation , StructureTensorMethod , StrTensorPrmValue , VoxelSizeX , VoxelSizeY , VoxelSizeZ
+pCM_TestImage.tif , Act , StDev , 1 , 1 , 1 , 0 , 1 , 2 , 0.1554 , 0.1554 , 0.4612
+pCM_TestImage.tif , DAPI , StDev , 0 , 0 , 1 , 0 , 0 , 2 , 0.1554 , 0.1554 , 0.4612
+pCM_TestImage.tif , aAct , StDev , 1 , 1 , 1 , 0 , 1 , 2 , 0.1554 , 0.1554 , 0.4612
