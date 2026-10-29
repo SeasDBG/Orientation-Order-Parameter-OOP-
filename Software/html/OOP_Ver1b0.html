@@ -1,0 +1,1186 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>OOP_Ver1b0</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2013-04-26"><meta name="DC.source" content="OOP_Ver1b0.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Orientational Order Parameter (OOP) Calculator</a></li><li><a href="#3">user-defined handles</a></li><li><a href="#6">SCRIPT EXECUTION</a></li><li><a href="#9">OPEN IMAGE</a></li><li><a href="#10">Input thresholds</a></li><li><a href="#13">if the batch mode is selected, only save the dataset array</a></li><li><a href="#15">otherwise save the images</a></li><li><a href="#17">HELPER FUNCTION</a></li><li><a href="#23">input data manipulation</a></li><li><a href="#24">circular statistics: OOPr</a></li><li><a href="#25">Von Mises mixture best fitting procedure</a></li><li><a href="#27">figure 2</a></li></ul></div><h2>Orientational Order Parameter (OOP) Calculator<a name="1"></a></h2><p>Beta version 1.0 date: 4/26/2013</p><p>The following code is part of the development of COBRA: the Cytoskeletal Organization Benchmark and Representation Assay.</p><p>written by: Francesco S. Pasqualini</p><p>DISEASE BIOPHYSICS GROUP CONFIDENTIAL Unpublished Copyright (c) 2013, DISEASE BIOPHYSICS GROUP, All Rights Reserved.</p><p>NOTICE:  All information contained herein is, and remains the property of the DISEASE BIOPHYSICS GROUP. The intellectual and technical concepts contained herein are proprietary to the DISEASE BIOPHYSICS GROUP and may be covered by U.S. and Foreign Patents, patents in process, and are protected by trade secret or copyright law. Dissemination of this information or reproduction of this material is strictly forbidden unless prior written permission is obtained from the DISEASE BIOPHYSICS GROUP.  Access to the source code contained herein is hereby forbidden to anyone except current DISEASE BIOPHYSICS GROUP employees, managers or contractors who have executed Confidentiality and Non-disclosure agreements explicitly covering such access.</p><p>The copyright notice above does not evidence any actual or intended publication or disclosure  of  this source code, which includes information that is confidential and/or proprietary, and is a trade secret, of  the DISEASE BIOPHYSICS GROUP. ANY REPRODUCTION, MODIFICATION, DISTRIBUTION, PUBLIC  PERFORMANCE, OR PUBLIC DISPLAY OF OR THROUGH USE  OF THIS  SOURCE CODE  WITHOUT  THE EXPRESS WRITTEN CONSENT OF COMPANY IS STRICTLY PROHIBITED, AND IN VIOLATION OF APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF  THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS  TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT  MAY DESCRIBE, IN WHOLE OR IN PART.</p><pre class="codeinput"><span class="keyword">function</span> varargout = OOP_Ver1b0(varargin)
+
+<span class="comment">% Begin initialization code - DO NOT EDIT</span>
+gui_Singleton = 1;
+gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+    <span class="string">'gui_OpeningFcn'</span>, @OOP_Ver1b0_OpeningFcn, <span class="keyword">...</span>
+    <span class="string">'gui_OutputFcn'</span>,  @OOP_Ver1b0_OutputFcn, <span class="keyword">...</span>
+    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+    <span class="string">'gui_Callback'</span>,   []);
+<span class="keyword">if</span> nargin &amp;&amp; ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+<span class="keyword">else</span>
+    gui_mainfcn(gui_State, varargin{:});
+<span class="keyword">end</span>
+<span class="comment">% End initialization code - DO NOT EDIT</span>
+
+<span class="comment">% load dependencies</span>
+
+restoredefaultpath
+[PATHSTR,NAME,EXT] = fileparts(pwd);
+addpath(genpath([PATHSTR,<span class="keyword">...</span>
+    <span class="string">'\Dependencies'</span>]));
+
+
+<span class="comment">% --- Executes just before OOP_Ver1b0 is made visible.</span>
+<span class="keyword">function</span> OOP_Ver1b0_OpeningFcn(hObject, eventdata, handles, varargin)
+</pre><pre class="codeinput"><span class="comment">% This function has no output args, see OutputFcn.</span>
+<span class="comment">% hObject    handle to figure</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+<span class="comment">% varargin   command line arguments to OOP_Ver1b0 (see VARARGIN)</span>
+
+<span class="comment">% Choose default command line output for OOP_Ver1b0</span>
+handles.output = hObject;
+</pre><h2>user-defined handles<a name="3"></a></h2><pre class="codeinput">handles.TotalDataset = [];
+handles.Dataset = [];
+handles.filename = []; <span class="comment">% store the name of the file being analyzed</span>
+handles.pathname = []; <span class="comment">% store the name of the folder from which the files are taken</span>
+handles.savename = []; <span class="comment">% store the name of the text file in which all the data are saved</span>
+handles.OOPopt = []; <span class="comment">% store all the user-defined options for the OOP calculation</span>
+
+
+axes(handles.dBGLogo);
+imshow(imread(<span class="string">'DBGHeader.PNG'</span>),[])
+
+set(handles.pushbutton1,<span class="string">'BackgroundColor'</span>,[240 240 240]/255,<span class="string">'string'</span>,<span class="keyword">...</span>
+    <span class="string">'Analyze'</span>,<span class="string">'enable'</span>,<span class="string">'on'</span>);
+set(handles.pushbutton2,<span class="string">'Enable'</span>,<span class="string">'off'</span>)
+<span class="comment">% Update handles structure</span>
+guidata(hObject, handles);
+
+<span class="comment">% UIWAIT makes OOP_Ver1b0 wait for user response (see UIRESUME)</span>
+<span class="comment">% uiwait(handles.figure1);</span>
+
+
+<span class="comment">% --- Outputs from this function are returned to the command line.</span>
+</pre><img vspace="5" hspace="5" src="OOP_Ver1b0_01.png" alt=""> <pre class="codeinput"><span class="keyword">function</span> varargout = OOP_Ver1b0_OutputFcn(hObject, eventdata, handles)
+<span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+<span class="comment">% hObject    handle to figure</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+<span class="comment">% Get default command line output from handles structure</span>
+varargout{1} = handles.output;
+
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> edit7_CreateFcn(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to edit7 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+<span class="comment">%       See ISPC and COMPUTER.</span>
+<span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+    set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+<span class="keyword">end</span>
+
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> edit8_CreateFcn(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to edit8 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+<span class="comment">%       See ISPC and COMPUTER.</span>
+<span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+    set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+<span class="keyword">end</span>
+
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> edit9_CreateFcn(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to edit9 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+<span class="comment">%       See ISPC and COMPUTER.</span>
+<span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+    set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+<span class="keyword">end</span>
+
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> edit10_CreateFcn(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to edit10 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+<span class="comment">%       See ISPC and COMPUTER.</span>
+<span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+    set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+<span class="keyword">end</span>
+
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> edit11_CreateFcn(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to edit11 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+<span class="comment">%       See ISPC and COMPUTER.</span>
+<span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+    set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> edit12_CreateFcn(hObject, eventdata, handles)
+</pre><pre class="codeinput"><span class="comment">% hObject    handle to edit12 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+<span class="comment">%       See ISPC and COMPUTER.</span>
+<span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+    set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2012a\toolbox\shared\hdlshared. 
+Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2012a\toolbox\shared\hdlshared. 
+Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2012a\toolbox\shared\hdlshared. 
+Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2012a\toolbox\shared\hdlshared. 
+Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2012a\toolbox\shared\hdlshared. 
+Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2012a\toolbox\shared\hdlshared. 
+Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2012a\toolbox\shared\hdlshared. 
+</pre><h2>SCRIPT EXECUTION<a name="6"></a></h2><pre class="codeinput"><span class="comment">% --- Executes on button press in pushbutton1.</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> pushbutton1_Callback(hObject, eventdata, handles)
+</pre><pre class="codeinput"><span class="comment">% hObject    handle to pushbutton1 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+clc
+<span class="comment">% arrayfun(@cla,findall(0,'type','axes'))</span>
+clear <span class="string">OOPsOpt</span> <span class="string">imOutput</span>
+
+
+set(handles.pushbutton1,<span class="string">'BackgroundColor'</span>,<span class="string">'r'</span>,<span class="string">'string'</span>,<span class="keyword">...</span>
+    <span class="string">'Analyzing'</span>,<span class="string">'enable'</span>,<span class="string">'off'</span>);
+set(handles.pushbutton2,<span class="string">'Enable'</span>,<span class="string">'off'</span>)
+guidata(hObject, handles);
+
+
+<span class="keyword">if</span> ~isempty(handles.Dataset)
+handles = rmfield(handles,<span class="string">'Dataset'</span>);
+handles = rmfield(handles,<span class="string">'TotalDataset'</span>);
+<span class="keyword">end</span>
+</pre><h2>OPEN IMAGE<a name="9"></a></h2><h2>Input thresholds<a name="10"></a></h2><pre class="codeinput">prompt = {<span class="string">'Intensity:'</span>,<span class="string">'Coherency:'</span>};
+dlg_title = <span class="string">'Specify orientation inclusion threshold'</span>;
+num_lines = 1;
+def = {<span class="string">'0.1'</span>,<span class="string">'0.3'</span>};
+UserSelections = inputdlg(prompt,dlg_title,num_lines,def);
+
+<span class="keyword">if</span> isempty(UserSelections)
+    set(handles.pushbutton1,<span class="string">'BackgroundColor'</span>,[240 240 240]/255,<span class="string">'string'</span>,<span class="keyword">...</span>
+        <span class="string">'Analyze'</span>,<span class="string">'enable'</span>,<span class="string">'on'</span>);
+<span class="keyword">end</span>
+
+UserSelections = str2double(UserSelections);
+
+OOPsOpt.thValues = UserSelections(1);
+OOPsOpt.thCoherency = UserSelections(2);
+
+<span class="keyword">if</span> get(handles.checkbox1, <span class="string">'Value'</span>)
+    ListOfFiles = SelectFolder(hObject, eventdata, handles);
+    NumFiles = length(ListOfFiles);
+    <span class="keyword">for</span> idx1 = 1:NumFiles
+
+        filenames{idx1} = ListOfFiles(idx1).name
+        display([filenames{idx1} ])
+
+        [PATHSTR,NAME,EXT] = fileparts(filenames{idx1});
+        handles.filename = NAME;
+        handles.pathname = PATHSTR;
+        guidata(hObject, handles);
+
+
+        imOutput = AnalyzeSingleImage(filenames{idx1},OOPsOpt,hObject,<span class="keyword">...</span>
+            eventdata, handles);
+
+        axes(handles.axes1)
+        imshow(imOutput.input.im,[])
+
+        axes(handles.axes2)
+        imshow(hsv2rgb(imOutput.output.image2show_hard),[])
+
+
+
+        imOutput.output.ExtractedMetrics(1,7) = OOPsOpt.thCoherency;
+        VariableNames = {<span class="string">'filename'</span>,<span class="string">'OOP'</span>,<span class="string">'OOP1'</span>,<span class="string">'OOP2'</span>,<span class="string">'gamma'</span>,<span class="string">'th'</span>,<span class="string">'rsq'</span>};
+
+        Data = {handles.filename,<span class="keyword">...</span>
+            imOutput.output.ExtractedMetrics(1),<span class="keyword">...</span>
+            imOutput.output.ExtractedMetrics(2),<span class="keyword">...</span>
+            imOutput.output.ExtractedMetrics(3),<span class="keyword">...</span>
+            1-imOutput.output.ExtractedMetrics(4) - <span class="keyword">...</span>
+            imOutput.output.ExtractedMetrics(5),<span class="keyword">...</span>
+            imOutput.output.ExtractedMetrics(7),<span class="keyword">...</span>
+            imOutput.output.ExtractedMetrics(6),<span class="keyword">...</span>
+            };
+
+
+        handles.Dataset = dataset({Data, VariableNames{:}});
+<span class="comment">%        handles.Dataset.filename = handles.filename;</span>
+
+        <span class="keyword">if</span> idx1 == 1
+            handles.TotalDataset = handles.Dataset;
+        <span class="keyword">else</span>
+            handles.TotalDataset = cat(1, handles.Dataset,<span class="keyword">...</span>
+                handles.TotalDataset);
+        <span class="keyword">end</span>
+
+        set(handles.edit1,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(1));
+        set(handles.edit2,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(2));
+        set(handles.edit3,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(3));
+        set(handles.edit4,<span class="string">'String'</span>,1-imOutput.output.ExtractedMetrics(4)-<span class="keyword">...</span>
+            imOutput.output.ExtractedMetrics(5))
+        set(handles.edit5,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(7))
+        set(handles.edit6,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(6))
+
+        guidata(hObject, handles);
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+
+
+    [PATHSTR,NAME,EXT] = fileparts(pwd);
+    imageFolder = [PATHSTR,<span class="keyword">...</span>
+        <span class="string">'\DemoImages\OOP\pCM\*.tif'</span>];
+
+
+    <span class="comment">% imageFolder = ['C:\'];</span>
+    [filename, pathname] = uigetfile(<span class="keyword">...</span>
+        imageFolder,<span class="keyword">...</span>
+        <span class="string">'Pick a TIFF image'</span>);
+
+    <span class="keyword">if</span> isequal(filename,0) || isequal(pathname,0)
+        disp(<span class="string">'User pressed cancel'</span>)
+        set(handles.pushbutton1,<span class="string">'BackgroundColor'</span>,[240 240 240]/255,<span class="string">'string'</span>,<span class="keyword">...</span>
+            <span class="string">'Analyze'</span>,<span class="string">'enable'</span>,<span class="string">'on'</span>);
+        <span class="keyword">return</span>
+    <span class="keyword">else</span>
+        disp([<span class="string">'User selected '</span>, fullfile(pathname, filename)])
+    <span class="keyword">end</span>
+
+
+    handles.filename = filename;
+    handles.pathname = pathname;
+    guidata(hObject, handles);
+
+
+    imOutput = AnalyzeSingleImage([pathname, filename],OOPsOpt,hObject,<span class="keyword">...</span>
+        eventdata, handles);
+
+    axes(handles.axes1)
+    imshow(imOutput.input.im,[])
+
+    axes(handles.axes2)
+    imshow(hsv2rgb(imOutput.output.image2show_hard),[])
+
+    imOutput.output.ExtractedMetrics(1,7) = OOPsOpt.thCoherency;
+    guidata(hObject, handles);
+
+
+
+    set(handles.edit1,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(1));
+    set(handles.edit2,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(2));
+    set(handles.edit3,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(3));
+    set(handles.edit4,<span class="string">'String'</span>,1-imOutput.output.ExtractedMetrics(4)-<span class="keyword">...</span>
+        imOutput.output.ExtractedMetrics(5))
+    set(handles.edit5,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(7))
+    set(handles.edit6,<span class="string">'String'</span>,imOutput.output.ExtractedMetrics(6))
+
+<span class="keyword">end</span>
+
+set(handles.pushbutton1,<span class="string">'BackgroundColor'</span>,[240 240 240]/255,<span class="string">'string'</span>,<span class="keyword">...</span>
+    <span class="string">'Analyze'</span>,<span class="string">'enable'</span>,<span class="string">'on'</span>);
+set(handles.pushbutton2,<span class="string">'Enable'</span>,<span class="string">'on'</span>)
+guidata(hObject, handles);
+
+
+guidata(hObject, handles);
+
+
+
+<span class="comment">% --- Executes on button press in pushbutton2.</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> pushbutton2_Callback(hObject, eventdata, handles)
+</pre><pre class="codeinput"><span class="comment">% hObject    handle to pushbutton2 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="comment">% this pushbotton triggers the saving routines</span>
+guidata(hObject, handles);
+set(handles.pushbutton1,<span class="string">'Enable'</span>,<span class="string">'off'</span>)
+set(handles.pushbutton2,<span class="string">'BackgroundColor'</span>,<span class="string">'r'</span>,<span class="string">'string'</span>,<span class="keyword">...</span>
+    <span class="string">'Saving'</span>,<span class="string">'enable'</span>,<span class="string">'on'</span>);
+</pre><h2>if the batch mode is selected, only save the dataset array<a name="13"></a></h2><pre class="codeinput"><span class="keyword">if</span> get(handles.checkbox1, <span class="string">'Value'</span>)
+</pre><pre class="codeinput"><span class="comment">%    handles.TotalDataset = handles.TotalDataset(:,[end,1:end]);</span>
+    export(handles.TotalDataset,<span class="string">'file'</span>,<span class="keyword">...</span>
+        [handles.pathname, <span class="string">'\'</span>, <span class="string">'FolderSummary.csv'</span>],<span class="string">'Delimiter'</span>,<span class="string">','</span>)
+     pause(1)
+</pre><h2>otherwise save the images<a name="15"></a></h2><pre class="codeinput"><span class="keyword">else</span>
+    <span class="comment">% take an editable snapshot of the GUI</span>
+    saveas(gcbf,[handles.pathname,handles.filename,<span class="string">'.eps'</span>],<span class="string">'psc2'</span>)
+
+    <span class="comment">% export into a single EPS file the histogram and fitting</span>
+    figTemp = figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+    newax = copyobj(handles.axes3,figTemp);
+    saveas(figTemp,[handles.pathname,handles.filename,<span class="string">'_1D.eps'</span>],<span class="string">'psc2'</span>)
+    close(figTemp)
+
+    <span class="comment">% export into a single EPS file the thresholded image</span>
+    figTemp = figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+    newax = copyobj(handles.axes2,figTemp);
+    saveas(figTemp,[handles.pathname,handles.filename,<span class="string">'_2D.eps'</span>],<span class="string">'psc2'</span>)
+
+<span class="keyword">end</span>
+
+set(handles.pushbutton1,<span class="string">'Enable'</span>,<span class="string">'on'</span>)
+set(handles.pushbutton2,<span class="string">'BackgroundColor'</span>,[240, 240, 240]/255,<span class="string">'string'</span>,<span class="keyword">...</span>
+    <span class="string">'Save'</span>,<span class="string">'enable'</span>,<span class="string">'off'</span>);
+guidata(hObject, handles);
+<span class="comment">%</span>
+</pre><h2>HELPER FUNCTION<a name="17"></a></h2><pre class="codeinput"><span class="keyword">function</span> imOutput = AnalyzeSingleImage(filename,OOPsOpt, hObject, eventdata, handles)
+
+imOutput.input = imageSelection(filename,hObject, eventdata, handles);
+
+imOutput.output = exectuteAnalysisSingleImage(imOutput.input.im,OOPsOpt,<span class="keyword">...</span>
+    hObject, eventdata, handles);
+
+
+<span class="keyword">function</span> imOutput = imageSelection(filename,hObject, eventdata, handles)
+
+
+imOutput.im = imread(filename);
+
+<span class="keyword">function</span> ListOfFiles = SelectFolder(hObject, eventdata, handles)
+[PATHSTR,NAME,EXT] = fileparts(pwd);
+imageFolder = [PATHSTR,<span class="keyword">...</span>
+    <span class="string">'\DemoImages\OOP\pCM'</span>];
+
+d = uigetdir(imageFolder);
+
+
+   <span class="keyword">if</span> isequal(d,0) || isequal(d,0)
+        disp(<span class="string">'User pressed cancel'</span>)
+        set(handles.pushbutton1,<span class="string">'BackgroundColor'</span>,[240 240 240]/255,<span class="string">'string'</span>,<span class="keyword">...</span>
+            <span class="string">'Analyze'</span>,<span class="string">'enable'</span>,<span class="string">'on'</span>);
+        <span class="keyword">return</span>
+   <span class="keyword">end</span>
+
+
+
+ListOfFiles = dir(fullfile(d, <span class="string">'*.tif'</span>));
+
+<span class="keyword">for</span> idx1 = 1:length(ListOfFiles)
+    ListOfFiles(idx1).name = [d,<span class="string">'\'</span>,ListOfFiles(idx1).name ];
+<span class="keyword">end</span>
+
+
+
+
+<span class="keyword">function</span> output = <span class="keyword">...</span>
+    exectuteAnalysisSingleImage(im,OOPsOpt,hObject, eventdata, handles)
+</pre><pre class="codeinput">im_RGB = im;
+
+<span class="comment">% general use vectors</span>
+<span class="comment">% interval for circular statistics operations</span>
+intervalRad = linspace(-pi,pi,360);
+<span class="comment">% starting point for optimization procedure</span>
+<span class="comment">% startingPoints = [0.1, deg2rad(20),deg2rad(20),0,pi,.1];</span>
+startingPoints = [0.1, 5,5,deg2rad(0),deg2rad(90),.1];
+
+NumOrientations = 180;
+theta = floor(linspace(-90,89,NumOrientations));
+
+ExtractedMetrics = zeros(1,7);
+<span class="comment">% convert in hue, saturation and value format</span>
+im_HSV = rgb2hsv(im_RGB);
+image2show = zeros(size(im_HSV));
+<span class="comment">% extract Orientations</span>
+Orientation = im_HSV(:,:,1);
+<span class="comment">% extract Coherency</span>
+Coherency = im_HSV(:,:,2);
+<span class="comment">% extract Gray Values for the original image</span>
+Values = im_HSV(:,:,3);
+
+<span class="comment">% apply defined thresholds</span>
+NonBackgroundOrientations = Orientation(Values&gt;OOPsOpt.thValues);
+HighConfidenceEdgeOrientations = Orientation(Values&gt;OOPsOpt.thValues &amp;<span class="keyword">...</span>
+    Coherency&gt;=(OOPsOpt.thCoherency*max(Coherency(:))));
+
+output.image2show_hard(:,:,1) = Orientation;
+output.image2show_hard(:,:,2) = Coherency.*(Coherency&gt;=<span class="keyword">...</span>
+    (OOPsOpt.thCoherency*max(Coherency(:))));
+output.image2show_hard(:,:,3) = Values.*(Values&gt;=OOPsOpt.thValues);
+
+<span class="comment">%</span>
+<span class="comment">% axes(handles.axes2)</span>
+<span class="comment">% imshow(hsv2rgb(image2show_hard),[])</span>
+<span class="comment">%</span>
+axes(handles.axes3)
+output.ExtractedMetrics(1,1:6) = calculateOOPs(HighConfidenceEdgeOrientations,<span class="keyword">...</span>
+    intervalRad,startingPoints,hObject, eventdata, handles);
+</pre><pre class="codeinput"><span class="keyword">function</span> output = <span class="keyword">...</span>
+    calculateOOPs(y,interval_rad,startingPoints,hObject, eventdata, handles)
+</pre><pre class="codeinput">fsp360_180deg = @(x) mod((x/2)+90,180)-90;
+fsp_hue_360rad = @(x) mod(x*2*pi,2*pi)-pi;
+fsp360_180rad = @(x) mod((x/2)+pi/2,pi)-pi/2;
+</pre><h2>input data manipulation<a name="23"></a></h2><pre class="codeinput"><span class="keyword">if</span>(max(y(:))&lt;=1 &amp; min(y(:))&gt;=0)
+    y = fsp_hue_360rad(y);
+<span class="keyword">end</span>
+[counts_angles] = hist(y,interval_rad);
+count_angles_density = counts_angles/trapz(interval_rad,counts_angles);
+<span class="comment">%count_angles_density = counts_angles/sum(counts_angles);</span>
+
+sumCounts = trapz(interval_rad, count_angles_density);
+</pre><h2>circular statistics: OOPr<a name="24"></a></h2><pre class="codeinput">Srad = circ_stats(y);
+mean_angle = Srad.mean;
+stdDev = Srad.std;
+OOPr = circ_r(y);
+</pre><h2>Von Mises mixture best fitting procedure<a name="25"></a></h2><p>use parameter estimation function from circular stat toolbox so uses the circular representation (vector y not y1)</p><pre class="codeinput"><span class="keyword">try</span>
+</pre><pre class="codeinput">    [cf_, gof_]= Trimodal_VonMisesFit(interval_rad,count_angles_density,<span class="keyword">...</span>
+        startingPoints);
+    cfvalues = coeffvalues(cf_);
+    fhat = cfvalues(1);
+    khat1 = cfvalues(2);
+    khat2 = abs(cfvalues(3));
+
+    mhat1 = cfvalues(4);
+    mhat2 = ((-1)^(cfvalues(3)&lt;0).*cfvalues(5));
+
+    ghat = cfvalues(6);
+    OOP1 = circ_r(circ_vmrnd(mhat1,khat1,1e3));
+    OOP2 = circ_r(circ_vmrnd(mhat2,khat2,1e3));
+    gof = gof_.rsquare;
+
+
+
+    output = [OOPr, OOP1, OOP2,fhat,ghat,gof];
+</pre><h2>figure 2<a name="27"></a></h2><p>plot the values of all OOP indicators, as well as the graph of OOP vs spread paraneter k and circular standard deviation</p><pre class="codeinput">    bestFit_VM = ghat*circ_vmpdf(interval_rad,0,0)+<span class="keyword">...</span>
+        fhat*circ_vmpdf(interval_rad,mhat1,khat1)+<span class="keyword">...</span>
+        (1-fhat-ghat)*circ_vmpdf(interval_rad,mhat2,khat2);
+    AreaFit = trapz(interval_rad,bestFit_VM);
+
+
+    bar(interval_rad,count_angles_density,<span class="string">'EdgeColor'</span>,<span class="string">'g'</span>,<span class="string">'FaceColor'</span>,<span class="string">'g'</span>)
+    <span class="comment">% plot(interval_rad,count_angles_density,'g')</span>
+    hold <span class="string">on</span>
+    plot(interval_rad,bestFit_VM,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,2)
+    <span class="comment">% bar(interval_rad,bestFit_VM,'EdgeColor','g','FaceColor','g','alpha',0.6)</span>
+    hold <span class="string">off</span>
+    legend({<span class="string">'data'</span>, <span class="string">'best fit'</span>},<span class="string">'FontSize'</span>,14,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>), legend <span class="string">boxoff</span>
+    title(<span class="string">'Von Mises Circular Fit'</span>,<span class="string">'FontSize'</span>,18,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>)
+    xlabel(<span class="string">'deg'</span>,<span class="string">'FontSize'</span>,14,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>)
+    ylabel(<span class="string">'normalized occurrence'</span>,<span class="string">'FontSize'</span>,14,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>)
+    set(handles.axes3,<span class="string">'Box'</span>,<span class="string">'off'</span>,<span class="string">'TickDir'</span>,<span class="string">'out'</span>)
+    set(handles.axes3,<span class="string">'FontSize'</span>,14,<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>)
+    set(handles.axes3,<span class="string">'Xlim'</span>,[-pi, pi],<span class="string">'Xtick'</span>,[-3.14,0,3.14],<span class="string">'XTickLabel'</span>,{<span class="string">'-90'</span>,<span class="string">'0'</span>,<span class="string">'90'</span>});
+</pre><pre class="codeinput"><span class="keyword">catch</span> err
+    output = [OOPr, zeros(1,5)];
+    display([<span class="string">'could not perform fitting:'</span>]);
+    getReport(err, <span class="string">'extended'</span>)
+
+
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> [cf_, gof_] = <span class="keyword">...</span>
+    Trimodal_VonMisesFit(interval_rad,count_angles_density,startingPoints)
+
+<span class="comment">% --- Plot data that was originally in data set "count_angles_density vs. interval_rad"</span>
+interval_rad = interval_rad(:);
+count_angles_density = count_angles_density(:);
+
+
+<span class="comment">% % --- Create fit "fit 1"</span>
+ok_ = isfinite(interval_rad) &amp; isfinite(count_angles_density);
+<span class="comment">% if ~all( ok_ )</span>
+<span class="comment">%     warning( 'GenerateMFile:IgnoringNansAndInfs',...</span>
+<span class="comment">%         'Ignoring NaNs and Infs in data.' );</span>
+<span class="comment">% end</span>
+
+st = startingPoints;
+opt = fitoptions(<span class="string">'Method'</span>,<span class="string">'NonlinearLeastSquares'</span>,<span class="keyword">...</span>
+    <span class="string">'Lower'</span>,[0 1 1 deg2rad(-90) deg2rad(91) 0],<span class="keyword">...</span>
+    <span class="string">'Upper'</span>,[1 100 100 deg2rad(90) deg2rad(180) 1],<span class="keyword">...</span>
+    <span class="string">'StartPoint'</span>,startingPoints);
+
+<span class="comment">% opt = fitoptions('Method','NonlinearLeastSquares',...</span>
+<span class="comment">%     'StartPoint',startingPoints);</span>
+ft_ = fittype([<span class="string">'0*circ_vmpdf(x,0,0) + f*circ_vmpdf(x,mhat1,khat1)+'</span><span class="keyword">...</span>
+    <span class="string">'(1-f-g)*circ_vmpdf(x,mhat2,khat2)'</span>],<span class="keyword">...</span>
+    <span class="string">'dependent'</span>,{<span class="string">'y'</span>},<span class="string">'independent'</span>,{<span class="string">'x'</span>},<span class="keyword">...</span>
+    <span class="string">'coefficients'</span>,{<span class="string">'f'</span>, <span class="string">'khat1'</span>, <span class="string">'khat2'</span>, <span class="string">'mhat1'</span>, <span class="string">'mhat2'</span>,<span class="string">'g'</span>},<span class="string">'options'</span>,opt);
+
+
+[cf_, gof_] = fit(interval_rad(ok_),count_angles_density(ok_),ft_);
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Orientational Order Parameter (OOP) Calculator
+% Beta version 1.0
+% date: 4/26/2013
+%
+% The following code is part of the development of COBRA: the Cytoskeletal
+% Organization Benchmark and Representation Assay.
+%
+% written by: Francesco S. Pasqualini
+%
+% DISEASE BIOPHYSICS GROUP CONFIDENTIAL
+% Unpublished Copyright (c) 2013,
+% DISEASE BIOPHYSICS GROUP, All Rights Reserved.
+%
+% NOTICE:  All information contained herein is, and remains the property of
+% the DISEASE BIOPHYSICS GROUP. The intellectual and technical concepts
+% contained herein are proprietary to the DISEASE BIOPHYSICS GROUP and may
+% be covered by U.S. and Foreign Patents, patents in process, and are
+% protected by trade secret or copyright law.
+% Dissemination of this information or reproduction of this material is
+% strictly forbidden unless prior written permission is obtained
+% from the DISEASE BIOPHYSICS GROUP.  Access to the source code contained
+% herein is hereby forbidden to anyone except current
+% DISEASE BIOPHYSICS GROUP employees, managers or contractors who have
+% executed Confidentiality and Non-disclosure agreements explicitly
+% covering such access.
+%
+% The copyright notice above does not evidence any actual or intended
+% publication or disclosure  of  this source code, which includes
+% information that is confidential and/or proprietary, and is a trade
+% secret, of  the DISEASE BIOPHYSICS GROUP.
+% ANY REPRODUCTION, MODIFICATION, DISTRIBUTION, PUBLIC  PERFORMANCE,
+% OR PUBLIC DISPLAY OF OR THROUGH USE  OF THIS  SOURCE CODE  WITHOUT  THE
+% EXPRESS WRITTEN CONSENT OF COMPANY IS STRICTLY PROHIBITED,
+% AND IN VIOLATION OF APPLICABLE LAWS AND INTERNATIONAL TREATIES.
+% THE RECEIPT OR POSSESSION OF  THIS SOURCE CODE AND/OR RELATED INFORMATION
+% DOES NOT CONVEY OR IMPLY ANY RIGHTS  TO REPRODUCE, DISCLOSE OR
+% DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT
+% IT  MAY DESCRIBE, IN WHOLE OR IN PART.
+
+function varargout = OOP_Ver1b0(varargin)
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @OOP_Ver1b0_OpeningFcn, ...
+    'gui_OutputFcn',  @OOP_Ver1b0_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+% load dependencies
+
+restoredefaultpath
+[PATHSTR,NAME,EXT] = fileparts(pwd);
+addpath(genpath([PATHSTR,...
+    '\Dependencies']));
+
+
+% REPLACE_WITH_DASH_DASH- Executes just before OOP_Ver1b0 is made visible.
+function OOP_Ver1b0_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to OOP_Ver1b0 (see VARARGIN)
+
+% Choose default command line output for OOP_Ver1b0
+handles.output = hObject;
+
+
+%% user-defined handles
+handles.TotalDataset = [];
+handles.Dataset = [];
+handles.filename = []; % store the name of the file being analyzed
+handles.pathname = []; % store the name of the folder from which the files are taken
+handles.savename = []; % store the name of the text file in which all the data are saved
+handles.OOPopt = []; % store all the user-defined options for the OOP calculation
+
+
+axes(handles.dBGLogo);
+imshow(imread('DBGHeader.PNG'),[])
+
+set(handles.pushbutton1,'BackgroundColor',[240 240 240]/255,'string',...
+    'Analyze','enable','on');
+set(handles.pushbutton2,'Enable','off')
+% Update handles structure
+guidata(hObject, handles);
+
+% UIWAIT makes OOP_Ver1b0 wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% REPLACE_WITH_DASH_DASH- Outputs from this function are returned to the command line.
+function varargout = OOP_Ver1b0_OutputFcn(hObject, eventdata, handles)
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function edit7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function edit8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function edit9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function edit10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function edit11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function edit12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+%% SCRIPT EXECUTION
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in pushbutton1.
+function pushbutton1_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+clc
+% arrayfun(@cla,findall(0,'type','axes'))
+clear OOPsOpt imOutput
+
+
+set(handles.pushbutton1,'BackgroundColor','r','string',...
+    'Analyzing','enable','off');
+set(handles.pushbutton2,'Enable','off')
+guidata(hObject, handles);
+
+
+if ~isempty(handles.Dataset)
+handles = rmfield(handles,'Dataset');
+handles = rmfield(handles,'TotalDataset');
+end
+%% OPEN IMAGE
+
+%% Input thresholds
+prompt = {'Intensity:','Coherency:'};
+dlg_title = 'Specify orientation inclusion threshold';
+num_lines = 1;
+def = {'0.1','0.3'};
+UserSelections = inputdlg(prompt,dlg_title,num_lines,def);
+
+if isempty(UserSelections)
+    set(handles.pushbutton1,'BackgroundColor',[240 240 240]/255,'string',...
+        'Analyze','enable','on');
+end
+
+UserSelections = str2double(UserSelections);
+
+OOPsOpt.thValues = UserSelections(1);
+OOPsOpt.thCoherency = UserSelections(2);
+
+if get(handles.checkbox1, 'Value')
+    ListOfFiles = SelectFolder(hObject, eventdata, handles);
+    NumFiles = length(ListOfFiles);
+    for idx1 = 1:NumFiles
+        
+        filenames{idx1} = ListOfFiles(idx1).name
+        display([filenames{idx1} ])
+        
+        [PATHSTR,NAME,EXT] = fileparts(filenames{idx1});
+        handles.filename = NAME;
+        handles.pathname = PATHSTR;
+        guidata(hObject, handles);
+        
+        
+        imOutput = AnalyzeSingleImage(filenames{idx1},OOPsOpt,hObject,...
+            eventdata, handles);
+        
+        axes(handles.axes1)
+        imshow(imOutput.input.im,[])
+        
+        axes(handles.axes2)
+        imshow(hsv2rgb(imOutput.output.image2show_hard),[])
+        
+        
+        
+        imOutput.output.ExtractedMetrics(1,7) = OOPsOpt.thCoherency;
+        VariableNames = {'filename','OOP','OOP1','OOP2','gamma','th','rsq'};
+        
+        Data = {handles.filename,...
+            imOutput.output.ExtractedMetrics(1),...
+            imOutput.output.ExtractedMetrics(2),...
+            imOutput.output.ExtractedMetrics(3),...
+            1-imOutput.output.ExtractedMetrics(4) - ...
+            imOutput.output.ExtractedMetrics(5),...
+            imOutput.output.ExtractedMetrics(7),...
+            imOutput.output.ExtractedMetrics(6),...
+            };
+        
+        
+        handles.Dataset = dataset({Data, VariableNames{:}});
+%        handles.Dataset.filename = handles.filename;
+        
+        if idx1 == 1
+            handles.TotalDataset = handles.Dataset;
+        else
+            handles.TotalDataset = cat(1, handles.Dataset,...
+                handles.TotalDataset);
+        end
+        
+        set(handles.edit1,'String',imOutput.output.ExtractedMetrics(1));
+        set(handles.edit2,'String',imOutput.output.ExtractedMetrics(2));
+        set(handles.edit3,'String',imOutput.output.ExtractedMetrics(3));
+        set(handles.edit4,'String',1-imOutput.output.ExtractedMetrics(4)-...
+            imOutput.output.ExtractedMetrics(5))
+        set(handles.edit5,'String',imOutput.output.ExtractedMetrics(7))
+        set(handles.edit6,'String',imOutput.output.ExtractedMetrics(6))
+        
+        guidata(hObject, handles);
+    end
+else
+    
+    
+    [PATHSTR,NAME,EXT] = fileparts(pwd);
+    imageFolder = [PATHSTR,...
+        '\DemoImages\OOP\pCM\*.tif'];
+    
+    
+    % imageFolder = ['C:\'];
+    [filename, pathname] = uigetfile(...
+        imageFolder,...
+        'Pick a TIFF image');
+    
+    if isequal(filename,0) || isequal(pathname,0)
+        disp('User pressed cancel')
+        set(handles.pushbutton1,'BackgroundColor',[240 240 240]/255,'string',...
+            'Analyze','enable','on');
+        return
+    else
+        disp(['User selected ', fullfile(pathname, filename)])
+    end
+    
+    
+    handles.filename = filename;
+    handles.pathname = pathname;
+    guidata(hObject, handles);
+    
+    
+    imOutput = AnalyzeSingleImage([pathname, filename],OOPsOpt,hObject,...
+        eventdata, handles);
+    
+    axes(handles.axes1)
+    imshow(imOutput.input.im,[])
+    
+    axes(handles.axes2)
+    imshow(hsv2rgb(imOutput.output.image2show_hard),[])
+    
+    imOutput.output.ExtractedMetrics(1,7) = OOPsOpt.thCoherency;
+    guidata(hObject, handles);
+   
+    
+    
+    set(handles.edit1,'String',imOutput.output.ExtractedMetrics(1));
+    set(handles.edit2,'String',imOutput.output.ExtractedMetrics(2));
+    set(handles.edit3,'String',imOutput.output.ExtractedMetrics(3));
+    set(handles.edit4,'String',1-imOutput.output.ExtractedMetrics(4)-...
+        imOutput.output.ExtractedMetrics(5))
+    set(handles.edit5,'String',imOutput.output.ExtractedMetrics(7))
+    set(handles.edit6,'String',imOutput.output.ExtractedMetrics(6))
+    
+end
+
+set(handles.pushbutton1,'BackgroundColor',[240 240 240]/255,'string',...
+    'Analyze','enable','on');
+set(handles.pushbutton2,'Enable','on')
+guidata(hObject, handles);
+
+
+guidata(hObject, handles);
+
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in pushbutton2.
+function pushbutton2_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% this pushbotton triggers the saving routines
+guidata(hObject, handles);  
+set(handles.pushbutton1,'Enable','off')
+set(handles.pushbutton2,'BackgroundColor','r','string',...
+    'Saving','enable','on');
+%% if the batch mode is selected, only save the dataset array
+if get(handles.checkbox1, 'Value')
+%    handles.TotalDataset = handles.TotalDataset(:,[end,1:end]);
+    export(handles.TotalDataset,'file',...
+        [handles.pathname, '\', 'FolderSummary.csv'],'Delimiter',',')
+     pause(1)
+    %% otherwise save the images
+else
+    % take an editable snapshot of the GUI
+    saveas(gcbf,[handles.pathname,handles.filename,'.eps'],'psc2')
+    
+    % export into a single EPS file the histogram and fitting
+    figTemp = figure('visible','off');
+    newax = copyobj(handles.axes3,figTemp);
+    saveas(figTemp,[handles.pathname,handles.filename,'_1D.eps'],'psc2')
+    close(figTemp)
+    
+    % export into a single EPS file the thresholded image
+    figTemp = figure('visible','off');
+    newax = copyobj(handles.axes2,figTemp);
+    saveas(figTemp,[handles.pathname,handles.filename,'_2D.eps'],'psc2')
+    
+end
+
+set(handles.pushbutton1,'Enable','on')
+set(handles.pushbutton2,'BackgroundColor',[240, 240, 240]/255,'string',...
+    'Save','enable','off');
+guidata(hObject, handles);    
+%
+
+
+
+%% HELPER FUNCTION
+
+function imOutput = AnalyzeSingleImage(filename,OOPsOpt, hObject, eventdata, handles)
+
+imOutput.input = imageSelection(filename,hObject, eventdata, handles);
+
+imOutput.output = exectuteAnalysisSingleImage(imOutput.input.im,OOPsOpt,...
+    hObject, eventdata, handles);
+
+
+function imOutput = imageSelection(filename,hObject, eventdata, handles)
+
+
+imOutput.im = imread(filename);
+
+function ListOfFiles = SelectFolder(hObject, eventdata, handles)
+[PATHSTR,NAME,EXT] = fileparts(pwd);
+imageFolder = [PATHSTR,...
+    '\DemoImages\OOP\pCM'];
+
+d = uigetdir(imageFolder);
+
+
+   if isequal(d,0) || isequal(d,0)
+        disp('User pressed cancel')
+        set(handles.pushbutton1,'BackgroundColor',[240 240 240]/255,'string',...
+            'Analyze','enable','on');
+        return
+   end
+        
+   
+   
+ListOfFiles = dir(fullfile(d, '*.tif'));
+
+for idx1 = 1:length(ListOfFiles)
+    ListOfFiles(idx1).name = [d,'\',ListOfFiles(idx1).name ];
+end
+
+
+
+
+function output = ...
+    exectuteAnalysisSingleImage(im,OOPsOpt,hObject, eventdata, handles)
+im_RGB = im;
+
+% general use vectors
+% interval for circular statistics operations
+intervalRad = linspace(-pi,pi,360);
+% starting point for optimization procedure
+% startingPoints = [0.1, deg2rad(20),deg2rad(20),0,pi,.1];
+startingPoints = [0.1, 5,5,deg2rad(0),deg2rad(90),.1];
+
+NumOrientations = 180;
+theta = floor(linspace(-90,89,NumOrientations));
+
+ExtractedMetrics = zeros(1,7);
+% convert in hue, saturation and value format
+im_HSV = rgb2hsv(im_RGB);
+image2show = zeros(size(im_HSV));
+% extract Orientations
+Orientation = im_HSV(:,:,1);
+% extract Coherency
+Coherency = im_HSV(:,:,2);
+% extract Gray Values for the original image
+Values = im_HSV(:,:,3);
+
+% apply defined thresholds
+NonBackgroundOrientations = Orientation(Values>OOPsOpt.thValues);
+HighConfidenceEdgeOrientations = Orientation(Values>OOPsOpt.thValues &...
+    Coherency>=(OOPsOpt.thCoherency*max(Coherency(:))));
+
+output.image2show_hard(:,:,1) = Orientation;
+output.image2show_hard(:,:,2) = Coherency.*(Coherency>=...
+    (OOPsOpt.thCoherency*max(Coherency(:))));
+output.image2show_hard(:,:,3) = Values.*(Values>=OOPsOpt.thValues);
+
+%
+% axes(handles.axes2)
+% imshow(hsv2rgb(image2show_hard),[])
+%
+axes(handles.axes3)
+output.ExtractedMetrics(1,1:6) = calculateOOPs(HighConfidenceEdgeOrientations,...
+    intervalRad,startingPoints,hObject, eventdata, handles);
+
+%%
+function output = ...
+    calculateOOPs(y,interval_rad,startingPoints,hObject, eventdata, handles)
+
+fsp360_180deg = @(x) mod((x/2)+90,180)-90;
+fsp_hue_360rad = @(x) mod(x*2*pi,2*pi)-pi;
+fsp360_180rad = @(x) mod((x/2)+pi/2,pi)-pi/2;
+%% input data manipulation
+
+if(max(y(:))<=1 & min(y(:))>=0)
+    y = fsp_hue_360rad(y);
+end
+[counts_angles] = hist(y,interval_rad);
+count_angles_density = counts_angles/trapz(interval_rad,counts_angles);
+%count_angles_density = counts_angles/sum(counts_angles);
+
+sumCounts = trapz(interval_rad, count_angles_density);
+%% circular statistics: OOPr
+Srad = circ_stats(y);
+mean_angle = Srad.mean;
+stdDev = Srad.std;
+OOPr = circ_r(y);
+
+%% Von Mises mixture best fitting procedure
+% use parameter estimation function from circular stat toolbox so uses the
+% circular representation (vector y not y1)
+
+try
+    
+    [cf_, gof_]= Trimodal_VonMisesFit(interval_rad,count_angles_density,...
+        startingPoints);
+    cfvalues = coeffvalues(cf_);
+    fhat = cfvalues(1);
+    khat1 = cfvalues(2);
+    khat2 = abs(cfvalues(3));
+    
+    mhat1 = cfvalues(4);
+    mhat2 = ((-1)^(cfvalues(3)<0).*cfvalues(5));
+    
+    ghat = cfvalues(6);
+    OOP1 = circ_r(circ_vmrnd(mhat1,khat1,1e3));
+    OOP2 = circ_r(circ_vmrnd(mhat2,khat2,1e3));
+    gof = gof_.rsquare;
+    
+    
+    
+    output = [OOPr, OOP1, OOP2,fhat,ghat,gof];
+    
+    
+    %% figure 2
+    % plot the values of all OOP indicators, as well as the graph of OOP vs
+    % spread paraneter k and circular standard deviation
+    
+    bestFit_VM = ghat*circ_vmpdf(interval_rad,0,0)+...
+        fhat*circ_vmpdf(interval_rad,mhat1,khat1)+...
+        (1-fhat-ghat)*circ_vmpdf(interval_rad,mhat2,khat2);
+    AreaFit = trapz(interval_rad,bestFit_VM);
+    
+    
+    bar(interval_rad,count_angles_density,'EdgeColor','g','FaceColor','g')
+    % plot(interval_rad,count_angles_density,'g')
+    hold on
+    plot(interval_rad,bestFit_VM,'k','LineWidth',2)
+    % bar(interval_rad,bestFit_VM,'EdgeColor','g','FaceColor','g','alpha',0.6)
+    hold off
+    legend({'data', 'best fit'},'FontSize',14,'FontWeight','bold'), legend boxoff
+    title('Von Mises Circular Fit','FontSize',18,'FontWeight','bold')
+    xlabel('deg','FontSize',14,'FontWeight','bold')
+    ylabel('normalized occurrence','FontSize',14,'FontWeight','bold')
+    set(handles.axes3,'Box','off','TickDir','out')
+    set(handles.axes3,'FontSize',14,'FontWeight','bold')
+    set(handles.axes3,'Xlim',[-pi, pi],'Xtick',[-3.14,0,3.14],'XTickLabel',{'-90','0','90'});
+catch err
+    output = [OOPr, zeros(1,5)];
+    display(['could not perform fitting:']);
+    getReport(err, 'extended')
+  
+    
+end
+
+
+function [cf_, gof_] = ...
+    Trimodal_VonMisesFit(interval_rad,count_angles_density,startingPoints)
+
+% REPLACE_WITH_DASH_DASH- Plot data that was originally in data set "count_angles_density vs. interval_rad"
+interval_rad = interval_rad(:);
+count_angles_density = count_angles_density(:);
+
+
+% % REPLACE_WITH_DASH_DASH- Create fit "fit 1"
+ok_ = isfinite(interval_rad) & isfinite(count_angles_density);
+% if ~all( ok_ )
+%     warning( 'GenerateMFile:IgnoringNansAndInfs',...
+%         'Ignoring NaNs and Infs in data.' );
+% end
+
+st = startingPoints;
+opt = fitoptions('Method','NonlinearLeastSquares',...
+    'Lower',[0 1 1 deg2rad(-90) deg2rad(91) 0],...
+    'Upper',[1 100 100 deg2rad(90) deg2rad(180) 1],...
+    'StartPoint',startingPoints);
+
+% opt = fitoptions('Method','NonlinearLeastSquares',...
+%     'StartPoint',startingPoints);
+ft_ = fittype(['0*circ_vmpdf(x,0,0) + f*circ_vmpdf(x,mhat1,khat1)+'...
+    '(1-f-g)*circ_vmpdf(x,mhat2,khat2)'],...
+    'dependent',{'y'},'independent',{'x'},...
+    'coefficients',{'f', 'khat1', 'khat2', 'mhat1', 'mhat2','g'},'options',opt);
+
+
+[cf_, gof_] = fit(interval_rad(ok_),count_angles_density(ok_),ft_);
+
+##### SOURCE END #####
+--></body></html>
